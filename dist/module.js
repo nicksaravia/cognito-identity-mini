@@ -14,6 +14,7 @@ let $149c1bd638913645$export$b925888f05fd1fd;
     AuthTarget["SignUp"] = "AWSCognitoIdentityProviderService.SignUp";
     AuthTarget["ConfirmSignUp"] = "AWSCognitoIdentityProviderService.ConfirmSignUp";
     AuthTarget["ResendConfirmationCode"] = "AWSCognitoIdentityProviderService.ResendConfirmationCode";
+    AuthTarget["InitiateAuth"] = "AWSCognitoIdentityProviderService.InitiateAuth";
 })($149c1bd638913645$export$b925888f05fd1fd || ($149c1bd638913645$export$b925888f05fd1fd = {}));
 let $149c1bd638913645$export$5c63b62ccf18ff3a;
 (function(CognitoException) {
@@ -67,6 +68,17 @@ const $149c1bd638913645$export$cf64224bcd829024 = async (email, password)=>{
     const post = $149c1bd638913645$var$createRequestFunction(requestInit);
     return await $149c1bd638913645$export$b5fe3f66a567bec0(post);
 };
+const $149c1bd638913645$export$9670d83f11d4b64a = async (email, password)=>{
+    const requestInit = $149c1bd638913645$export$b813e82ac49a13e9($149c1bd638913645$export$b925888f05fd1fd.InitiateAuth, {
+        AuthFlow: "USER_PASSWORD_AUTH",
+        AuthParameters: {
+            USERNAME: email,
+            PASSWORD: password
+        }
+    });
+    const post = $149c1bd638913645$var$createRequestFunction(requestInit);
+    return await $149c1bd638913645$export$b5fe3f66a567bec0(post);
+};
 const $149c1bd638913645$export$2ce39ab6662e8c24 = async (email, confirmationCode)=>{
     const requestInit = $149c1bd638913645$export$b813e82ac49a13e9($149c1bd638913645$export$b925888f05fd1fd.ConfirmSignUp, {
         ConfirmationCode: confirmationCode,
@@ -94,5 +106,5 @@ class $149c1bd638913645$export$36ba3035496698f9 extends Error {
 }
 
 
-export {$149c1bd638913645$export$8d21e34596265fa2 as configure, $149c1bd638913645$export$838e2a576d4d6ff6 as headers, $149c1bd638913645$export$b925888f05fd1fd as AuthTarget, $149c1bd638913645$export$5c63b62ccf18ff3a as CognitoException, $149c1bd638913645$export$b5fe3f66a567bec0 as request, $149c1bd638913645$export$36ba3035496698f9 as CognitoError, $149c1bd638913645$export$b813e82ac49a13e9 as generateRequestShape, $149c1bd638913645$export$cf64224bcd829024 as signUp, $149c1bd638913645$export$2ce39ab6662e8c24 as confirmSignUp, $149c1bd638913645$export$f24137cafeaef1a1 as resendConfirmationCode};
+export {$149c1bd638913645$export$8d21e34596265fa2 as configure, $149c1bd638913645$export$838e2a576d4d6ff6 as headers, $149c1bd638913645$export$b925888f05fd1fd as AuthTarget, $149c1bd638913645$export$5c63b62ccf18ff3a as CognitoException, $149c1bd638913645$export$b5fe3f66a567bec0 as request, $149c1bd638913645$export$36ba3035496698f9 as CognitoError, $149c1bd638913645$export$b813e82ac49a13e9 as generateRequestShape, $149c1bd638913645$export$cf64224bcd829024 as signUp, $149c1bd638913645$export$9670d83f11d4b64a as signIn, $149c1bd638913645$export$2ce39ab6662e8c24 as confirmSignUp, $149c1bd638913645$export$f24137cafeaef1a1 as resendConfirmationCode};
 //# sourceMappingURL=module.js.map

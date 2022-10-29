@@ -6,7 +6,8 @@ export const headers: {
 export enum AuthTarget {
     SignUp = "AWSCognitoIdentityProviderService.SignUp",
     ConfirmSignUp = "AWSCognitoIdentityProviderService.ConfirmSignUp",
-    ResendConfirmationCode = "AWSCognitoIdentityProviderService.ResendConfirmationCode"
+    ResendConfirmationCode = "AWSCognitoIdentityProviderService.ResendConfirmationCode",
+    InitiateAuth = "AWSCognitoIdentityProviderService.InitiateAuth"
 }
 export enum CognitoException {
     UsernameExistsException = "UsernameExistsException",
@@ -27,8 +28,12 @@ export const generateRequestShape: (target: AuthTarget, body: Body) => {
     body: string;
 };
 export const signUp: (email: string, password: string) => Promise<SignUpResponse>;
+export const signIn: (email: string, password: string) => Promise<any>;
 export const confirmSignUp: (email: string, confirmationCode: string) => Promise<Record<string, string>>;
 export const resendConfirmationCode: (email: string) => Promise<ResendConfirmationResponse>;
+/**
+ * Post Responses
+ **/
 export interface ResendConfirmationResponse {
     CodeDeliveryDetails: {
         AttributeName: string;
@@ -45,9 +50,19 @@ export interface SignUpResponse {
     UserConfirmed: boolean;
     UserSub: string;
 }
-export type Body = BaseBody | SignUpBody | ConfirmSignUpBody;
+/**
+ * Post Body
+ **/
+export type Body = BaseBody | SignUpBody | ConfirmSignUpBody | SignInBody;
 export interface BaseBody {
     Username: string;
+}
+export interface SignInBody {
+    AuthFlow: string;
+    AuthParameters: {
+        USERNAME: string;
+        PASSWORD: string;
+    };
 }
 export interface SignUpBody extends BaseBody {
     Password: string;
@@ -59,6 +74,9 @@ export interface SignUpBody extends BaseBody {
 export interface ConfirmSignUpBody extends BaseBody {
     ConfirmationCode: string;
 }
+/**
+ * Error Handling
+ **/
 export interface CognitoErrorResponse {
     __type: CognitoException;
     message: string;

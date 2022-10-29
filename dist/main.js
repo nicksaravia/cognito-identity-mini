@@ -10,6 +10,7 @@ $parcel$export(module.exports, "request", () => $882b6d93070905b3$export$b5fe3f6
 $parcel$export(module.exports, "CognitoError", () => $882b6d93070905b3$export$36ba3035496698f9);
 $parcel$export(module.exports, "generateRequestShape", () => $882b6d93070905b3$export$b813e82ac49a13e9);
 $parcel$export(module.exports, "signUp", () => $882b6d93070905b3$export$cf64224bcd829024);
+$parcel$export(module.exports, "signIn", () => $882b6d93070905b3$export$9670d83f11d4b64a);
 $parcel$export(module.exports, "confirmSignUp", () => $882b6d93070905b3$export$2ce39ab6662e8c24);
 $parcel$export(module.exports, "resendConfirmationCode", () => $882b6d93070905b3$export$f24137cafeaef1a1);
 // link below gives insight on how to do this
@@ -28,6 +29,7 @@ let $882b6d93070905b3$export$b925888f05fd1fd;
     AuthTarget["SignUp"] = "AWSCognitoIdentityProviderService.SignUp";
     AuthTarget["ConfirmSignUp"] = "AWSCognitoIdentityProviderService.ConfirmSignUp";
     AuthTarget["ResendConfirmationCode"] = "AWSCognitoIdentityProviderService.ResendConfirmationCode";
+    AuthTarget["InitiateAuth"] = "AWSCognitoIdentityProviderService.InitiateAuth";
 })($882b6d93070905b3$export$b925888f05fd1fd || ($882b6d93070905b3$export$b925888f05fd1fd = {}));
 let $882b6d93070905b3$export$5c63b62ccf18ff3a;
 (function(CognitoException) {
@@ -77,6 +79,17 @@ const $882b6d93070905b3$export$cf64224bcd829024 = async (email, password)=>{
             }
         ],
         Username: email
+    });
+    const post = $882b6d93070905b3$var$createRequestFunction(requestInit);
+    return await $882b6d93070905b3$export$b5fe3f66a567bec0(post);
+};
+const $882b6d93070905b3$export$9670d83f11d4b64a = async (email, password)=>{
+    const requestInit = $882b6d93070905b3$export$b813e82ac49a13e9($882b6d93070905b3$export$b925888f05fd1fd.InitiateAuth, {
+        AuthFlow: "USER_PASSWORD_AUTH",
+        AuthParameters: {
+            USERNAME: email,
+            PASSWORD: password
+        }
     });
     const post = $882b6d93070905b3$var$createRequestFunction(requestInit);
     return await $882b6d93070905b3$export$b5fe3f66a567bec0(post);
