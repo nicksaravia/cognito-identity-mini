@@ -1,10 +1,10 @@
 // link below gives insight on how to do this
 // https://github.com/aws-amplify/amplify-js/blob/main/packages/amazon-cognito-identity-js/src/Client.js
 let REACT_APP_COGNITO_CLIENT_ID;
-const REACT_APP_COGNITO_URL = ""
+const REACT_APP_COGNITO_URL = "";
 export const configure = (clientId) => {
-    REACT_APP_COGNITO_CLIENT_ID = clientId;
-}
+  REACT_APP_COGNITO_CLIENT_ID = clientId;
+};
 
 export const headers = {
   "X-Amz-User-Agent": "Chrome",
@@ -15,6 +15,7 @@ export enum AuthTarget {
   SignUp = "AWSCognitoIdentityProviderService.SignUp",
   ConfirmSignUp = "AWSCognitoIdentityProviderService.ConfirmSignUp",
   ResendConfirmationCode = "AWSCognitoIdentityProviderService.ResendConfirmationCode",
+  InitiateAuth = "AWSCognitoIdentityProviderService.InitiateAuth",
 }
 export enum CognitoException {
   // sign up exceptions
@@ -72,7 +73,22 @@ export const signUp = async (email: string, password: string) => {
   return await request<SignUpResponse>(post);
 };
 
-export const confirmSignUp = async (email: string, confirmationCode: string) => {
+export const signIn = async (email: string, password: string) => {
+  const requestInit = generateRequestShape(AuthTarget.InitiateAuth, {
+    AuthFlow: "USER_PASSWORD_AUTH",
+    AuthParameters: {
+      USERNAME: email,
+      PASSWORD: password,
+    },
+  });
+  const post = createRequestFunction(requestInit);
+  return await request<any>(post);
+};
+
+export const confirmSignUp = async (
+  email: string,
+  confirmationCode: string
+) => {
   const requestInit = generateRequestShape(AuthTarget.ConfirmSignUp, {
     ConfirmationCode: confirmationCode,
     Username: email,
@@ -90,9 +106,13 @@ export const resendConfirmationCode = async (email: string) => {
 };
 
 const createRequestFunction = (requestInit: RequestInit) => {
-  return async (): Promise<Response> => fetch(REACT_APP_COGNITO_URL, requestInit);
+  return async (): Promise<Response> =>
+    fetch(REACT_APP_COGNITO_URL, requestInit);
 };
 
+/**
+ * Post Responses
+ **/
 export interface ResendConfirmationResponse {
   CodeDeliveryDetails: {
     AttributeName: string;
@@ -110,10 +130,20 @@ export interface SignUpResponse {
   UserSub: string;
 }
 
-export type Body = BaseBody | SignUpBody | ConfirmSignUpBody;
+/**
+ * Post Body
+ **/
 
+export type Body = BaseBody | SignUpBody | ConfirmSignUpBody | SignInBody;
 export interface BaseBody {
   Username: string;
+}
+export interface SignInBody {
+  AuthFlow: string;
+  AuthParameters: {
+    USERNAME: string;
+    PASSWORD: string;
+  };
 }
 export interface SignUpBody extends BaseBody {
   Password: string;
@@ -123,6 +153,9 @@ export interface ConfirmSignUpBody extends BaseBody {
   ConfirmationCode: string;
 }
 
+/**
+ * Error Handling
+ **/
 export interface CognitoErrorResponse {
   __type: CognitoException;
   message: string;
