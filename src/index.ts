@@ -1,3 +1,4 @@
+import fetch, { RequestInit, Response } from "node-fetch";
 // link below gives insight on how to do this
 // https://github.com/aws-amplify/amplify-js/blob/main/packages/amazon-cognito-identity-js/src/Client.js
 let REACT_APP_COGNITO_CLIENT_ID;
@@ -37,8 +38,9 @@ export const request = async <T>(post: () => Promise<Response>): Promise<T> => {
 
     if (response.ok) return data as T;
 
-    if ("__type" in data) {
-      throw new CognitoError("response-error", data.__type);
+    if (typeof data === "object" && "__type" in data) {
+      const error = data as CognitoErrorResponse;
+      throw new CognitoError("response-error", error.__type);
     }
 
     throw new Error("default error");

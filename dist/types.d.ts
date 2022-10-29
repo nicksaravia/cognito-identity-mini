@@ -1,3 +1,4 @@
+import { Response } from "node-fetch";
 export const configure: (clientId: any) => void;
 export const headers: {
     "X-Amz-User-Agent": string;
