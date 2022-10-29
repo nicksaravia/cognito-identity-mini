@@ -1,6 +1,6 @@
 {
   "name": "cognito-identity-mini",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "source": "src/index.ts",
   "main": "dist/main.js",
   "module": "dist/module.js",
