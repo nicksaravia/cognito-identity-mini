@@ -1,0 +1,17 @@
+name: Publish To Npm
+on:
+ release:
+ types: [published]
+jobs:
+  check-bats-version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          registry-url: https://registry.npmjs.org/
+      - run: npm install
+      - run: npm publish — access public
+        env:
+         NODE_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}
